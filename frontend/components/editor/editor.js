@@ -5,11 +5,14 @@ import "styles/editor";
 export const OutputOrShell = () => {
     return (
         <div className={"output-or-shell"}>
-            <div className={"editor-header"}>
+            <div className={"editor-header no-border-left"}>
                 <span className={"text-editor-output-name"}>output</span>
                 <div className={"text-editor-command-wrapper"}>
                     <button className={"editor-btn text-editor-btn-clear"}>clear</button>
                 </div>
+            </div>
+            <div className={"text-output-content"}>
+                output text area
             </div>
         </div>
     )
@@ -23,6 +26,9 @@ export const TextEditor = () => {
                 <div className={"text-editor-command-wrapper"}>
                     <button className={"editor-btn text-editor-btn-blue"}>run</button>
                 </div>
+            </div>
+            <div className={"text-editor-content"}>
+                editor text area
             </div>
         </div>
     )

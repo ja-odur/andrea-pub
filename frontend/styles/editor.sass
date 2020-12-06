@@ -1,14 +1,16 @@
 $borderColor: #d3dce6
 $editorHeaderFontColor: rgba(37, 38, 94, 0.7)
+$editorContentHeight:  calc(100vh - 48px - 20px)
 
 
 .editor-container
   display: flex
   flex-wrap: wrap
+  width: 98%
   height: 100vh
 
   //border: 1px solid red
-  margin-top: 20px
+  margin: 20px auto 0 auto
 
 .output-or-shell
   width: 50%
@@ -39,7 +41,7 @@ $editorHeaderFontColor: rgba(37, 38, 94, 0.7)
   align-items: center
   justify-content: center
   height: 48px
-  border-left: 1px solid $borderColor
+  //border-left: 1px solid $borderColor
   border-right: 1px solid $borderColor
 
 .text-editor-command-wrapper
@@ -79,3 +81,17 @@ $editorHeaderFontColor: rgba(37, 38, 94, 0.7)
   justify-content: center
   height: 48px
   text-transform: capitalize
+
+.text-editor-content
+  height: $editorContentHeight
+  border-left: 1px solid $borderColor
+  border-right: 1px solid $borderColor
+  border-bottom: 1px solid $borderColor
+
+.text-output-content
+  height: $editorContentHeight
+  border-right: 1px solid $borderColor
+  border-bottom: 1px solid $borderColor
+
+.no-border-left
+  border-left: none

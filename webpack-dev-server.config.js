@@ -4,16 +4,18 @@ var BundleTracker = require('webpack-bundle-tracker');
 
 var config = require('./webpack.base.config.js');
 
+
+// override django's STATIC_URL for webpack bundles
+config.output.publicPath = `${process.env.REACT_APP_BASE_STATIC_URL}frontend/static/bundles/`;
+
 config.devServer = {
         port: 3000,
         headers: { 'Access-Control-Allow-Origin': '*' },
         compress: true,
         hot: true,
         host:'0.0.0.0',
+        publicPath: config.output.publicPath,
     };
-
-// override django's STATIC_URL for webpack bundles
-config.output.publicPath = `${process.env.BASE_STATIC_URL}frontend/static/bundles/`;
 
 // Add HotModuleReplacementPlugin and BundleTracker plugins
 config.plugins =  config.plugins.concat([
@@ -27,7 +29,7 @@ config.module.rules.push(
   {
     test: /\.js$/,
     exclude: /node_modules/,
-    use: ['react-hot', 'babel-loader']
+    use: ['react-hot-loader/webpack', 'babel-loader']
   }
 );
 

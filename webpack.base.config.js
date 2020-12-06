@@ -18,7 +18,7 @@ const config = () => {
     return {
         context: __dirname,
 
-        entry: './frontend/index.tsx',
+        entry: './frontend/index.js',
 
         output: {
             path: path.resolve('./frontend/static/bundles/'),
@@ -70,7 +70,7 @@ const config = () => {
         },
 
         resolve: {
-            modules: ['node_modules'],
+            modules: ['node_modules', 'frontend'],
             extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.scss', '.sass', '.png']
         },
 

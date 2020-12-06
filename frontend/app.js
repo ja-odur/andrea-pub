@@ -1,7 +1,9 @@
 import React from "react";
 
+import Editor from "./components/editor/editor";
+
+import "styles/main";
+
 export default function App () {
-    return (
-        <div>Online compiler</div>
-    )
+    return <Editor />;
 };

@@ -1,6 +1,6 @@
 const path = require('path');
 const dotenv = require('dotenv');
-var webpack = require('webpack');
+const webpack = require('webpack');
 
 function compact(items) {
     return items.filter(item => item);
@@ -26,7 +26,7 @@ const config = () => {
         },
 
         plugins: [
-            new webpack.DefinePlugin(envKeys)
+            new webpack.DefinePlugin(envKeys),
         ],
 
         module: {
@@ -35,6 +35,10 @@ const config = () => {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     use: ['babel-loader']
+                },
+                {
+                  test: /\.css$/,
+                  use: ['style-loader', 'css-loader']
                 },
                 {
                     test: /\.sass$/,

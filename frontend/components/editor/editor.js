@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { ControlledEditor } from '@monaco-editor/react';
 
 import "styles/editor";
+
+const BAD_WORD = "eval";
+const WARNING_MESSAGE = " <- hey man, what's this?";
 
 export const OutputOrShell = () => {
     return (
@@ -19,6 +23,15 @@ export const OutputOrShell = () => {
 }
 
 export const TextEditor = () => {
+
+    const handleEditorChange = (ev, value) => {
+        return value.includes(BAD_WORD) && !value.includes(WARNING_MESSAGE)
+          ? value.replace(BAD_WORD, BAD_WORD + WARNING_MESSAGE)
+          : value.includes(WARNING_MESSAGE) && !value.includes(BAD_WORD)
+            ? value.replace(WARNING_MESSAGE, "")
+            : value;
+      };
+
     return (
         <div className={"text-editor"}>
             <div className={"editor-header"}>
@@ -27,8 +40,14 @@ export const TextEditor = () => {
                     <button className={"editor-btn text-editor-btn-blue"}>run</button>
                 </div>
             </div>
-            <div className={"text-editor-content"}>
-                editor text area
+            <div className={"text-editor-content"} id={"text-editor"}>
+                <ControlledEditor
+                    height="100%"
+                    language="javascript"
+                    value={"// write your code here"}
+                    onChange={handleEditorChange}
+                    className={"text-editor-"}
+                  />
             </div>
         </div>
     )

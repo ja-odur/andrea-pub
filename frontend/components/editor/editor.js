@@ -46,7 +46,14 @@ export const TextEditor = () => {
                     language="javascript"
                     value={"// write your code here"}
                     onChange={handleEditorChange}
-                    className={"text-editor-"}
+                    theme={'dark'}
+                    options={{
+                        fontFamily: "Monaco, Menlo, 'Courier New', monospace",
+                        fontSize: "20px",
+                        codeLens: false,
+                        showUnused: true,
+                        showDeprecated: true,
+                    }}
                   />
             </div>
         </div>

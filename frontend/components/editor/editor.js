@@ -44,7 +44,7 @@ export const TextEditor = () => {
     return (
         <div className={"text-editor"}>
             <div className={"editor-header"}>
-                <span className={"text-editor-filename"}>main.py</span>
+                <span className={"text-editor-name"}>editor</span>
                 <div className={"text-editor-command-wrapper"}>
                     <ReactSelect
                         wrapperClassName={"text-editor-language-select"}

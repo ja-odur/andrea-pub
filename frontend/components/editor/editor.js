@@ -1,13 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ControlledEditor } from '@monaco-editor/react';
 import config from "./editorConfigs";
 import examples from "./examples";
 import ReactSelect from "../selects/reactSelect";
+import { Resizable } from "re-resizable";
 
 import "styles/editor";
 
 const BAD_WORD = "eval";
 const WARNING_MESSAGE = " <- hey man, what's this?";
+
+export const HorizontalMultiResizable = ({leftComponent, rightComponent}) => {
+    return (
+        <div
+            style={{
+                width: '100%',
+                display: 'flex',
+                overflow: 'hidden',
+            }}
+        >
+            <Resizable
+                // style={style}
+                defaultSize={{
+                  width: '50%',
+                  // height: 200,
+                }}
+                maxWidth="75%"
+                minWidth="50%"
+            >
+                {leftComponent}
+            </Resizable>
+            <div style={{ width: '100%', minWidth: '25%' }}>
+                {rightComponent}
+            </div>
+
+        </div>
+    )
+}
 
 export const OutputOrShell = () => {
     return (
@@ -78,8 +107,10 @@ export const TextEditor = () => {
 export default function Editor () {
     return (
         <div className={"editor-container"}>
-            <TextEditor />
-            <OutputOrShell />
+            <HorizontalMultiResizable
+                leftComponent={<TextEditor />}
+                rightComponent={<OutputOrShell />}
+            />
         </div>
     )
 }

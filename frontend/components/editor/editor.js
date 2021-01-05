@@ -77,14 +77,11 @@ export const TextEditor = () => {
     const [isFullScreen, setIsFullScreen] = useState(false)
     const [language, setLanguage] = useState(config.availableLanguages[1]);
     const [theme, setTheme] = useState(config.defaultTheme);
+    const [code, setCode] = useState('');
 
     const handleEditorChange = (ev, value) => {
-        return value.includes(BAD_WORD) && !value.includes(WARNING_MESSAGE)
-          ? value.replace(BAD_WORD, BAD_WORD + WARNING_MESSAGE)
-          : value.includes(WARNING_MESSAGE) && !value.includes(BAD_WORD)
-            ? value.replace(WARNING_MESSAGE, "")
-            : value;
-      };
+        setCode(value)
+    };
 
     const handleLanguageChange = (value) => {
         setLanguage(value);
@@ -118,7 +115,7 @@ export const TextEditor = () => {
                     <ControlledEditor
                         height="100%"
                         language={config.supportedLanguages[language.key].name}
-                        value={examples[config.supportedLanguages[language.key].exampleId]}
+                        value={code || examples[config.supportedLanguages[language.key].exampleId]}
                         onChange={handleEditorChange}
                         theme={theme}
                         options={{

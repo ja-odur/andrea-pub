@@ -1,0 +1,95 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:9.6.10-alpine
+    user: postgres
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASS: docker
+      POSTGRES_DB: puzzled
+    ports:
+      - "5555:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - andrea-network
+#
+#  redis:
+#    image: redis
+#    expose:
+#      - 6379
+#    networks:
+#      - puzzled-network
+
+  build-app-image:
+    build:
+      context: .
+      dockerfile: .docker/web_app.dockerfile
+    image: jaodur/andrea
+    command: echo image build complete
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - andrea-network
+
+  ssh-server:
+    build:
+      context: .
+      dockerfile: .docker/ssh_server.dockerfile
+      args:
+        SSH_USER: ${SSH_USER}
+        SSH_USER_PASSWORD: ${SSH_USER_PASSWORD}
+    image: jaodur/ssh-server
+    command: bash -c "echo running ssh-server && service ssh start && tail -f /dev/null"
+    ports:
+      - "${SSH_HOST_PORT}:22"
+
+    volumes:
+      - .docker/configs/sshd.config:/etc/ssh/sshd_config
+    env_file:
+      - .env
+    networks:
+      - andrea-network
+    restart: unless-stopped
+
+  web:
+    image: jaodur/andrea
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    stdin_open: true
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - andrea-network
+    depends_on:
+      - build-app-image
+      - ssh-server
+
+  build-watch:
+    image: jaodur/andrea
+    command: bash -c "npm rebuild node-sass && npm run watch"
+    stdin_open: true
+    volumes:
+      - .:/app
+    ports:
+    - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - andrea-network
+
+
+networks:
+  andrea-network:
+    driver: bridge
+
+volumes:
+  compiler_data: {}
+  db_data: {}

@@ -1,6 +1,6 @@
 FROM python:3.6-slim-buster
 RUN apt-get -y update && \
-    apt-get -y --no-install-recommends install --fix-missing openssh-server && \
+    apt-get -y --no-install-recommends install --fix-missing openssh-server openssl && \
     rm -rf /var/lib/apt/lists/*
 
 ARG SSH_USER

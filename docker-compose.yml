@@ -36,17 +36,17 @@ services:
     networks:
       - andrea-network
 
-  ssh-server:
+  python-ssh-server:
     build:
       context: .
-      dockerfile: .docker/ssh_server.dockerfile
+      dockerfile: .docker/python_ssh_server.dockerfile
       args:
         SSH_USER: ${SSH_USER}
         SSH_USER_PASSWORD: ${SSH_USER_PASSWORD}
-    image: jaodur/ssh-server
+    image: jaodur/python-ssh-server
     command: bash -c "echo running ssh-server && service ssh start && tail -f /dev/null"
     ports:
-      - "${SSH_HOST_PORT}:22"
+      - "${PYTHON_SSH_HOST_PORT}:22"
 
     volumes:
       - .docker/configs/sshd.config:/etc/ssh/sshd_config

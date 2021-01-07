@@ -56,6 +56,26 @@ services:
       - andrea-network
     restart: unless-stopped
 
+  node-ssh-server:
+    build:
+      context: .
+      dockerfile: .docker/node_ssh_server.dockerfile
+      args:
+        SSH_USER: ${SSH_USER}
+        SSH_USER_PASSWORD: ${SSH_USER_PASSWORD}
+    image: jaodur/node-ssh-server
+    command: bash -c "echo running ssh-server && service ssh start && tail -f /dev/null"
+    ports:
+      - "${NODE_SSH_HOST_PORT}:22"
+
+    volumes:
+      - .docker/configs/sshd.config:/etc/ssh/sshd_config
+    env_file:
+      - .env
+    networks:
+      - andrea-network
+    restart: unless-stopped
+
   web:
     image: jaodur/andrea
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
@@ -70,7 +90,8 @@ services:
       - andrea-network
     depends_on:
       - build-app-image
-      - ssh-server
+      - python-ssh-server
+      - node-ssh-server
 
   build-watch:
     image: jaodur/andrea

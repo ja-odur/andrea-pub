@@ -4,9 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+dataclasses = "*"
 django = "*"
+djangorestframework = "*"
 django-webpack-loader  = "*"
 dj_database_url = "*"
+paramiko = "*"
 python-decouple = "*"
 psycopg2-binary = "*"
 

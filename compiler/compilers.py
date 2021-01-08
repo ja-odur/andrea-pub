@@ -40,11 +40,17 @@ class SSHClientSingleton(type):
 
 class SSHCompiler(metaclass=SSHClientSingleton):
 
-    def __init__(self, *args, port=None, **kwargs):
-
-        self.client = SSHClient.connect(
-            config('SSH_BASE_URL', 'localhost'),
-            port=port,
-            username=config('SSH_USER'),
-            passowrd=config('SSH_USER_PASSWORD')
+    def __init__(self, *args, lang_config=None, **kwargs):
+        self.lang_config = lang_config
+        self.client = SSHClient()
+        self.client.set_missing_host_key_policy(AutoAddPolicy())
+        self.client.connect(
+            settings.SSH_BASE_URL,
+            port=lang_config.port,
+            username=settings.SSH_USER,
+            password=settings.SSH_USER_PASSWORD
         )
+
+    def exec_command(self, command, include_entrypoint=True, **kwargs):
+        command = f'{self.lang_config.entrypoint} {command}' if include_entrypoint else command
+        return self.client.exec_command(command, **kwargs)

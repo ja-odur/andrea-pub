@@ -1,12 +1,20 @@
-from decouple import config
+from dataclasses import dataclass
+from django.conf import settings
+from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
+
+
+@dataclass
+class LanguageConfig:
+    port: int
+    entrypoint: str
 
 
 class SSHClientSingleton(type):
     _instances = {}
     _host_configs = {
-        'python': config('PYTHON_SSH_HOST_PORT'),
-        'javascript': config('NODE_SSH_HOST_PORT')
+        'python': LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='python'),
+        'javascript': LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node')
     }
 
     def __call__(cls, *args, **kwargs):
@@ -16,10 +24,10 @@ class SSHClientSingleton(type):
             raise Exception("language is a required key argument")
 
         if not cls._instances.get(language):
-            port = cls._host_configs.get(language)
-            if not port:
+            lang_config = cls._host_configs.get(language)
+            if not lang_config:
                 raise Exception('language is not configured')
-            cls._instances[language] = super().__call__(*args, port=port, **kwargs)
+            cls._instances[language] = super().__call__(*args, lang_config=lang_config, **kwargs)
 
         return cls._instances[language]
 

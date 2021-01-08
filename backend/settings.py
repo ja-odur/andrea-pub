@@ -132,3 +132,11 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json')
     }
 }
+
+# ssh compiler/interpreter settings
+
+SSH_BASE_URL = config('SSH_BASE_URL', 'localhost')
+SSH_USER = config('SSH_USER')
+SSH_USER_PASSWORD = config('SSH_USER_PASSWORD')
+PYTHON_SSH_HOST_PORT = config('PYTHON_SSH_HOST_PORT')
+NODE_SSH_HOST_PORT = config('NODE_SSH_HOST_PORT')

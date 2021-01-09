@@ -44,7 +44,7 @@ export const HorizontalMultiResizable = ({leftComponent, rightComponent}) => {
     )
 }
 
-export const OutputOrShell = () => {
+export const OutputOrShell = ({ codeOutput }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
     return (
@@ -66,7 +66,16 @@ export const OutputOrShell = () => {
                     </div>
                 </div>
                 <div className={"text-output-content"}>
-                    output text area
+                    <div className={"text-output-content-success"}>
+                        {codeOutput.output.map((line, index) => (
+                            <pre key={index}>{line}</pre>
+                        ))}
+                    </div>
+                    <div className={"text-output-content-error"}>
+                        {codeOutput.error.map((line, index) => (
+                            <pre key={index}>{line}</pre>
+                        ))}
+                    </div>
                 </div>
             </div>
         </FullScreen>
@@ -150,11 +159,12 @@ export const TextEditor = ({ updateCodeOutput }) => {
 }
 
 export default function Editor () {
+    const [codeOutput, setCodeOutput] = useState({ output: [], error: [] })
     return (
         <div className={"editor-container"}>
             <HorizontalMultiResizable
-                leftComponent={<TextEditor />}
-                rightComponent={<OutputOrShell />}
+                leftComponent={<TextEditor updateCodeOutput={setCodeOutput} />}
+                rightComponent={<OutputOrShell codeOutput={codeOutput} />}
             />
         </div>
     )

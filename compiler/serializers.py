@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from rest_framework import serializers
+from .compilers import CodeOutput
 
 
 @dataclass
@@ -14,3 +15,11 @@ class CodeSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Code(**validated_data)
+
+
+class CodeRunOutputSerializer(serializers.Serializer):
+    output = serializers.ListField()
+    error = serializers.ListField()
+
+    def create(self, validated_data):
+        return CodeOutput(**validated_data)

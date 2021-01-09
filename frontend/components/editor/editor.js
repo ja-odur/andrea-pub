@@ -7,6 +7,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import config from "./editorConfigs";
 import examples from "./examples";
 import FullScreenIcon from "../icons/fullscreen";
+import { runCodeApi } from "apis/compiler";
 
 import "styles/editor";
 
@@ -72,12 +73,12 @@ export const OutputOrShell = () => {
     )
 }
 
-export const TextEditor = () => {
+export const TextEditor = ({ updateCodeOutput }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
     const [language, setLanguage] = useState(config.availableLanguages[1]);
     const [theme, setTheme] = useState(config.defaultTheme);
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState(examples[config.supportedLanguages[language.key].exampleId]);
 
     const handleEditorChange = (ev, value) => {
         setCode(value)
@@ -86,6 +87,17 @@ export const TextEditor = () => {
     const handleLanguageChange = (value) => {
         setLanguage(value);
     };
+
+    const handleRunCLick = async () => {
+        await runCodeApi({ language: language.key, code })
+            .then(data => {
+                console.log(data)
+                updateCodeOutput(data)
+            })
+            .catch(err => {
+                console.log(err.response.data)
+            })
+    }
 
     return (
         <FullScreen
@@ -108,7 +120,12 @@ export const TextEditor = () => {
                             options={config.availableLanguages}
                             onChange={handleLanguageChange}
                         />
-                        <button className={"editor-btn text-editor-btn-blue"}>run</button>
+                        <button
+                            onClick={handleRunCLick}
+                            className={"editor-btn text-editor-btn-blue"}
+                        >
+                            run
+                        </button>
                     </div>
                 </div>
                 <div className={"text-editor-content"} id={"text-editor"}>

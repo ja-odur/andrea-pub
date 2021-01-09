@@ -10,6 +10,12 @@ class LanguageConfig:
     entrypoint: str
 
 
+@dataclass
+class CodeOutput:
+    output: list
+    error: list
+
+
 class SSHClientSingleton(type):
     _instances = {}
     _host_configs = {
@@ -40,6 +46,8 @@ class SSHClientSingleton(type):
 
 class SSHCompiler(metaclass=SSHClientSingleton):
 
+    NEW_LINE = '\n'
+
     def __init__(self, *args, lang_config=None, **kwargs):
         self.lang_config = lang_config
         self.client = SSHClient()
@@ -53,4 +61,16 @@ class SSHCompiler(metaclass=SSHClientSingleton):
 
     def exec_command(self, command, include_entrypoint=True, **kwargs):
         command = f'{self.lang_config.entrypoint} {command}' if include_entrypoint else command
-        return self.client.exec_command(command, **kwargs)
+        return self._format_exec_result(self.client.exec_command(command, **kwargs))
+
+    def exec_as_heredoc(self, command, include_entrypoint=True, **kwargs):
+        heredoc_structure = '<<EOF\n{}\nEOF'
+        command = heredoc_structure.format(command)
+        return self.exec_command(command, include_entrypoint=include_entrypoint, **kwargs)
+
+    def _format_exec_result(self, exec_result):
+        _, stdout, stderr = exec_result
+        output = [r for r in stdout.read().decode().split(self.NEW_LINE) if r]
+        error = [r for r in stderr.read().decode().split(self.NEW_LINE) if r]
+
+        return CodeOutput(output=output, error=error)

@@ -1,0 +1,3 @@
+JAVASCRIPT = 'javascript'
+PYTHON = 'python'
+

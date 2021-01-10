@@ -2,12 +2,15 @@ from dataclasses import dataclass
 from django.conf import settings
 from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
+from .languages import JAVASCRIPT, PYTHON
+
 
 
 @dataclass
 class LanguageConfig:
     port: int
     entrypoint: str
+    language: str
 
 
 @dataclass
@@ -19,8 +22,8 @@ class CodeOutput:
 class SSHClientSingleton(type):
     _instances = {}
     _host_configs = {
-        'python': LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='python'),
-        'javascript': LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node')
+        PYTHON: LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='python', language=PYTHON),
+        JAVASCRIPT: LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node', language=JAVASCRIPT)
     }
 
     def __call__(cls, *args, **kwargs):

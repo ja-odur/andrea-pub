@@ -54,7 +54,7 @@ class SSHCompiler(metaclass=SSHClientSingleton):
         self.client.set_missing_host_key_policy(AutoAddPolicy())
         self.client.connect(
             settings.SSH_BASE_URL,
-            port=lang_config.port,
+            port=self.lang_config.port,
             username=settings.SSH_USER,
             password=settings.SSH_USER_PASSWORD
         )
@@ -74,3 +74,6 @@ class SSHCompiler(metaclass=SSHClientSingleton):
         error = [r for r in stderr.read().decode().split(self.NEW_LINE) if r]
 
         return CodeOutput(output=output, error=error)
+
+    def disconnect(self):
+        return self.__class__.close(self.lang_config.language)

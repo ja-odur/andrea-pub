@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from django.conf import settings
 from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
+from .exceptions import LanguageNotConfiguredError
 from .languages import JAVASCRIPT, PYTHON
 
 
@@ -35,7 +36,10 @@ class SSHClientSingleton(type):
         if not cls._instances.get(language):
             lang_config = cls._host_configs.get(language)
             if not lang_config:
-                raise Exception('language is not configured')
+                raise LanguageNotConfiguredError(
+                    f"The language '{language}' is not configured. The configured languages are "
+                    f"{list(cls._host_configs.keys())}."
+                )
             cls._instances[language] = super().__call__(*args, lang_config=lang_config, **kwargs)
 
         return cls._instances[language]

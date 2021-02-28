@@ -76,6 +76,34 @@ services:
       - andrea-network
     restart: unless-stopped
 
+  go-ssh-server:
+    build:
+      context: .
+      dockerfile: .docker/go_ssh_server.dockerfile
+      args:
+        SSH_USER: ${SSH_USER}
+        SSH_USER_PASSWORD: ${SSH_USER_PASSWORD}
+    image: jaodur/go-ssh-server
+    command: >
+            bash -c "chmod u+x /bin/run_go_script.sh &&
+                     chmod u+x /bin/set_go_path.sh &&
+                     set_go_path.sh &&
+                     echo running ssh-server &&
+                     service ssh start && tail -f /dev/null"
+    ports:
+      - "${GO_SSH_HOST_PORT}:22"
+    volumes:
+      - .docker/configs/sshd.config:/etc/ssh/sshd_config
+      - .docker/scripts/run_go_script.sh:/bin/run_go_script.sh
+      - .docker/scripts/set_go_path.sh:/bin/set_go_path.sh
+    env_file:
+      - .env
+    environment:
+      - GOPATH=/usr/local/go/bin
+    networks:
+      - andrea-network
+    restart: unless-stopped
+
   web:
     image: jaodur/andrea
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"

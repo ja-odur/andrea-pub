@@ -4,6 +4,7 @@ const config = {
     themes: ['dark', 'light'],
     defaultTheme: 'dark',
     availableLanguages: [
+        {key: "go", label: "Go 1.15", value: "go"},
         {key: "javascript", label: "JavaScript (Node.js)", value: "javascript"},
         {key: "python", label: "Python 3", value: "python"},
     ],

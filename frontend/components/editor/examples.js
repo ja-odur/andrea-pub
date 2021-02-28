@@ -1,5 +1,13 @@
 import rTabs from "utils/rTabs";
 const examples = {
+    13: rTabs(`
+    // Write Go code here.
+    package main
+    import "fmt"
+    func main() {
+        fmt.Println("hello world")
+    }
+    `),
     19: rTabs(`
     // Write JavaScript code here.
     console.log("Hello world");

@@ -3,8 +3,7 @@ from django.conf import settings
 from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
 from .exceptions import LanguageNotConfiguredError
-from .languages import JAVASCRIPT, PYTHON
-
+from .languages import GO, JAVASCRIPT, PYTHON
 
 
 @dataclass
@@ -24,7 +23,8 @@ class SSHClientSingleton(type):
     _instances = {}
     _host_configs = {
         PYTHON: LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='python', language=PYTHON),
-        JAVASCRIPT: LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node', language=JAVASCRIPT)
+        JAVASCRIPT: LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node', language=JAVASCRIPT),
+        GO: LanguageConfig(port=settings.GO_SSH_HOST_PORT, entrypoint='/bin/run_go_script.sh', language=GO)
     }
 
     def __call__(cls, *args, **kwargs):

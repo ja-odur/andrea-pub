@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from django.conf import settings
 from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
+from paramiko.ssh_exception import SSHException
 from .exceptions import LanguageNotConfiguredError
 from .languages import GO, JAVASCRIPT, PYTHON
 
@@ -68,7 +69,12 @@ class SSHCompiler(metaclass=SSHClientSingleton):
 
     def exec_command(self, command, include_entrypoint=True, **kwargs):
         command = f'{self.lang_config.entrypoint} {command}' if include_entrypoint else command
-        return self._format_exec_result(self.client.exec_command(command, **kwargs))
+        try:
+            return self._format_exec_result(self.client.exec_command(command, **kwargs))
+        except SSHException:
+            self.disconnect()
+            compiler = self.__class__(language=self.lang_config.language)
+            return compiler._format_exec_result(compiler.client.exec_command(command, **kwargs))
 
     def exec_as_heredoc(self, command, include_entrypoint=True, **kwargs):
         heredoc_structure = '<<EOF\n{}\nEOF'

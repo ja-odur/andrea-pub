@@ -4,7 +4,7 @@ from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
 from paramiko.ssh_exception import SSHException
 from .exceptions import LanguageNotConfiguredError
-from .languages import GO, JAVASCRIPT, PYTHON
+from .languages import CPP, GO, JAVASCRIPT, PYTHON
 
 
 @dataclass
@@ -25,7 +25,8 @@ class SSHClientSingleton(type):
     _host_configs = {
         PYTHON: LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='python', language=PYTHON),
         JAVASCRIPT: LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node', language=JAVASCRIPT),
-        GO: LanguageConfig(port=settings.GO_SSH_HOST_PORT, entrypoint='/bin/run_go_script.sh', language=GO)
+        GO: LanguageConfig(port=settings.GO_SSH_HOST_PORT, entrypoint='/bin/run_go_script.sh', language=GO),
+        CPP: LanguageConfig(port=settings.CPP_SSH_HOST_PORT, entrypoint='/bin/run_cpp_script.sh', language=CPP),
     }
 
     def __call__(cls, *args, **kwargs):

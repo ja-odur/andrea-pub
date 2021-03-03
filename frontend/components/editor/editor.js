@@ -85,7 +85,7 @@ export const OutputOrShell = ({ codeOutput }) => {
 export const TextEditor = ({ updateCodeOutput }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
-    const [language, setLanguage] = useState(config.availableLanguages[1]);
+    const [language, setLanguage] = useState(config.availableLanguages[0]);
     const [theme, setTheme] = useState(config.defaultTheme);
     const [code, setCode] = useState(examples[config.supportedLanguages[language.key].exampleId]);
 
@@ -100,7 +100,6 @@ export const TextEditor = ({ updateCodeOutput }) => {
     const handleRunCLick = async () => {
         await runCodeApi({ language: language.key, code })
             .then(data => {
-                console.log(data)
                 updateCodeOutput(data)
             })
             .catch(err => {

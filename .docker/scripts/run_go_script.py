@@ -16,7 +16,7 @@ try:
     print(stdin, file=f)
     f.close()
     os.execlp("go", "go", "run", tmp_file)
+    # unfortunately execution does not go past this point
 finally:
     print("removing file")
-    sss
     os.remove(tmp_file)

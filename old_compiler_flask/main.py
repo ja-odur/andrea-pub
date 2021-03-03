@@ -27,7 +27,6 @@ def initialize_errorhandlers(application):
     application.register_blueprint(middleware_blueprint)
     application.register_blueprint(api_blueprint)
 
-
 def create_app(config=config[config_name]):
     """creates a flask app object from a config object"""
 
@@ -40,8 +39,6 @@ def create_app(config=config[config_name]):
 
     # import views
     import api.views
-
-
     return app
 
 

@@ -89,18 +89,26 @@ export const OutputOrShell = ({ loading, codeOutput }) => {
 }
 
 export const TextEditor = ({ codeRunning, setCodeRunning, updateCodeOutput }) => {
+    const extractCodeExample = (language) => {
+        return examples[config.supportedLanguages[language.key].exampleId]
+    }
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
     const [language, setLanguage] = useState(config.availableLanguages[0]);
     const [theme, setTheme] = useState(config.defaultTheme);
-    const [code, setCode] = useState(examples[config.supportedLanguages[language.key].exampleId]);
+    const [code, setCode] = useState(extractCodeExample(language));
+    const [isEditorClean, setIsEditorClean] = useState(true);
 
-    const handleEditorChange = (ev, value) => {
-        setCode(value)
+    const handleEditorChange = (ev, code) => {
+        setCode(code)
+        setIsEditorClean(false)
     };
 
-    const handleLanguageChange = (value) => {
-        setLanguage(value);
+    const handleLanguageChange = (language) => {
+        setLanguage(language);
+        if(isEditorClean) {
+            setCode(extractCodeExample(language))
+        }
     };
 
     const handleRunCLick = async () => {
@@ -149,7 +157,7 @@ export const TextEditor = ({ codeRunning, setCodeRunning, updateCodeOutput }) =>
                     <ControlledEditor
                         height="100%"
                         language={config.supportedLanguages[language.key].name}
-                        value={code || examples[config.supportedLanguages[language.key].exampleId]}
+                        value={code}
                         onChange={handleEditorChange}
                         theme={theme}
                         options={{

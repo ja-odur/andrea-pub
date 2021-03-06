@@ -4,7 +4,7 @@ const examples = {
     // Write your C++ code here
     #include <iostream>
     int main() {
-        std::cout << "Hello World!";
+        std::cout << "hello from andrea!";
         return 0;
     }
     `),
@@ -13,16 +13,16 @@ const examples = {
     package main
     import "fmt"
     func main() {
-        fmt.Println("hello world")
+        fmt.Println("hello from andrea!")
     }
     `),
     19: rTabs(`
     // Write JavaScript code here.
-    console.log("Hello world");
+    console.log("hello from andrea!");
     `),
     37: rTabs(`
-    # Write Python 3 code here.
-    print("Hello world")
+    # Write Python code here.
+    print("hello from andrea!")
     `),
 }
 

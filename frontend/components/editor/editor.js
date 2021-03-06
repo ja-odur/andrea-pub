@@ -8,11 +8,10 @@ import config from "./editorConfigs";
 import examples from "./examples";
 import FullScreenIcon from "../icons/fullscreen";
 import { runCodeApi } from "apis/compiler";
+import TextLoader from "components/loaders/textLoader"
 
 import "styles/editor";
 
-const BAD_WORD = "eval";
-const WARNING_MESSAGE = " <- hey man, what's this?";
 
 const iconSize = '60%';
 
@@ -44,7 +43,7 @@ export const HorizontalMultiResizable = ({leftComponent, rightComponent}) => {
     )
 }
 
-export const OutputOrShell = ({ codeOutput }) => {
+export const OutputOrShell = ({ loading, codeOutput }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
     return (
@@ -66,23 +65,30 @@ export const OutputOrShell = ({ codeOutput }) => {
                     </div>
                 </div>
                 <div className={"text-output-content"}>
-                    <div className={"text-output-content-success"}>
-                        {codeOutput.output.map((line, index) => (
-                            <pre key={index}>{line}</pre>
-                        ))}
-                    </div>
-                    <div className={"text-output-content-error"}>
-                        {codeOutput.error.map((line, index) => (
-                            <pre key={index}>{line}</pre>
-                        ))}
-                    </div>
+                    {loading
+                        ?
+                        <TextLoader />
+                        :
+                        <>
+                            <div className={"text-output-content-success"}>
+                                {codeOutput.output.map((line, index) => (
+                                    <pre key={index}>{line}</pre>
+                                ))}
+                            </div>
+                            <div className={"text-output-content-error"}>
+                            {codeOutput.error.map((line, index) => (
+                                <pre key={index}>{line}</pre>
+                            ))}
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
         </FullScreen>
     )
 }
 
-export const TextEditor = ({ updateCodeOutput }) => {
+export const TextEditor = ({ codeRunning, setCodeRunning, updateCodeOutput }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
     const [language, setLanguage] = useState(config.availableLanguages[0]);
@@ -98,6 +104,7 @@ export const TextEditor = ({ updateCodeOutput }) => {
     };
 
     const handleRunCLick = async () => {
+        setCodeRunning(true);
         await runCodeApi({ language: language.key, code })
             .then(data => {
                 updateCodeOutput(data)
@@ -105,6 +112,7 @@ export const TextEditor = ({ updateCodeOutput }) => {
             .catch(err => {
                 console.log(err.response.data)
             })
+        setCodeRunning(false);
     }
 
     return (
@@ -130,7 +138,8 @@ export const TextEditor = ({ updateCodeOutput }) => {
                         />
                         <button
                             onClick={handleRunCLick}
-                            className={"editor-btn text-editor-btn-blue"}
+                            disabled={codeRunning}
+                            className={`editor-btn ${codeRunning ? 'btn-disabled' : 'text-editor-btn-blue'}`}
                         >
                             run
                         </button>
@@ -159,11 +168,13 @@ export const TextEditor = ({ updateCodeOutput }) => {
 
 export default function Editor () {
     const [codeOutput, setCodeOutput] = useState({ output: [], error: [] })
+    const [loading, setLoading] = useState(false);
+    const [codeRunning, setCodeRunning] = useState(false);
     return (
         <div className={"editor-container"}>
             <HorizontalMultiResizable
-                leftComponent={<TextEditor updateCodeOutput={setCodeOutput} />}
-                rightComponent={<OutputOrShell codeOutput={codeOutput} />}
+                leftComponent={<TextEditor  codeRunning={codeRunning} setCodeRunning={setCodeRunning} updateCodeOutput={setCodeOutput} />}
+                rightComponent={<OutputOrShell loading={codeRunning} codeOutput={codeOutput} />}
             />
         </div>
     )

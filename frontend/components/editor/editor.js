@@ -8,7 +8,7 @@ import config from "./editorConfigs";
 import examples from "./examples";
 import FullScreenIcon from "../icons/fullscreen";
 import { runCodeApi } from "apis/compiler";
-import TextLoader from "components/loaders/textLoader"
+import DotLoader from "components/loaders/dotLoader";
 
 import "styles/editor";
 
@@ -67,7 +67,7 @@ export const OutputOrShell = ({ loading, codeOutput }) => {
                 <div className={"text-output-content"}>
                     {loading
                         ?
-                        <TextLoader />
+                        <DotLoader />
                         :
                         <>
                             <div className={"text-output-content-success"}>

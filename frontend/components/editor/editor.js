@@ -72,12 +72,12 @@ export const OutputOrShell = ({ loading, codeOutput }) => {
                         <>
                             <div className={"text-output-content-success"}>
                                 {codeOutput.output.map((line, index) => (
-                                    <pre key={index}>{line}</pre>
+                                    <div className="output-code-line" key={index}>{line}</div>
                                 ))}
                             </div>
                             <div className={"text-output-content-error"}>
                             {codeOutput.error.map((line, index) => (
-                                <pre key={index}>{line}</pre>
+                                <div className="output-code-line" key={index}>{line}</div>
                             ))}
                             </div>
                         </>

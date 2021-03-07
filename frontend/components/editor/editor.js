@@ -9,6 +9,7 @@ import FullScreenIcon from "../icons/fullscreen";
 import DarkModeIcon from "../icons/darkMode";
 import { runCodeApi } from "apis/compiler";
 import DotLoader from "components/loaders/dotLoader";
+
 import { HorizontalMultiResizable, VerticalMultiResizable } from "components/resizable/multipleResizable";
 
 import "styles/editor";
@@ -17,7 +18,7 @@ import "styles/editor";
 const iconSize = '60%';
 
 
-export const OutputOrShell = ({ loading, codeOutput, fullscreen, darkMode }) => {
+export const OutputOrShell = ({ loading, codeOutput, fullscreen, darkMode, loaderOptions }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
     const [lightMode, setLightMode] = useState(true)
@@ -56,7 +57,7 @@ export const OutputOrShell = ({ loading, codeOutput, fullscreen, darkMode }) => 
                 <div className={`text-output-content ${lightMode ? "output-light" : "output-dark"}`}>
                     {loading
                         ?
-                        <DotLoader />
+                        <DotLoader { ...(loaderOptions || {}) }/>
                         :
                         <>
                             <div className={`text-output-content-success ${lightMode ? "text-output-content-s-light" : "text-output-content-s-dark"}`}>
@@ -176,6 +177,7 @@ export const TextEditor = ({ codeRunning, setCodeRunning, updateCodeOutput }) =>
                             loading={codeRunning}
                             codeOutput={internalCodeOutput}
                             darkMode
+                            loaderOptions={{ className: "dot-min-loader" }}
                         />
                     }
                 />

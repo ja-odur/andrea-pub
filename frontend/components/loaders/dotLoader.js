@@ -4,9 +4,9 @@ import React from "react";
 import "styles/loader";
 
 
-const DotLoader = () => {
+const DotLoader = ({ className }) => {
     return (
-        <div className="dot-loader">
+        <div className={className || "dot-loader"}>
            <div className="loading-dots">
                 <div className="loading-dots--dot" />
                 <div className="loading-dots--dot" />

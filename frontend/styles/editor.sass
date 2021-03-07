@@ -1,6 +1,6 @@
 $borderColor: #d3dce6
 $editorHeaderFontColor: rgba(37, 38, 94, 0.7)
-$editorContentHeight:  calc(100vh - 48px - 20px)
+$editorContentHeight:  calc(100vh - 58px)
 
 
 .editor-container
@@ -95,12 +95,14 @@ $editorContentHeight:  calc(100vh - 48px - 20px)
   border-bottom: 1px solid $borderColor
   background: #ffffff
   font-size: 20px
+  overflow: auto
 
 .text-output-content-success
   margin: 0 5px
   color: #1f2123
+
   //a quick fix fot breaking borders
-  border: 1px solid #ffffff
+  border: 1px solid inherit
 
 .text-output-content-error
   margin: 0 5px

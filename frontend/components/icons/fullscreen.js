@@ -22,7 +22,8 @@ const FullScreenIcon = ({
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill={fill || "rgba(37, 38, 94, 0.7)"}
+                // fill={fill || "rgba(37, 38, 94, 0.7)"}
+                fill={fill || "#d4d4d4"}
                 viewBox="0 0 16 16"
                 height={height}
                 width={width}

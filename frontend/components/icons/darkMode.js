@@ -6,9 +6,13 @@ const DarkModeIcon = ({
     active,
     width,
     height,
+    onClick,
     fill }) => {
     return (
-        <div className={wrapperClassName || 'icon-wrapper'}>
+        <div
+            className={wrapperClassName || 'icon-wrapper'}
+            onClick={onClick}
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={width}

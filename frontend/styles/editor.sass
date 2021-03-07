@@ -19,11 +19,20 @@ $editorContentHeight:  calc(100vh - 58px)
     display: flex
     flex-wrap: wrap
     justify-content: space-between
-    color: rgba(37, 38, 94, 0.7)
     height: 48px
     font-size: 1.2rem
-    border: 1px solid $borderColor
-    background: #ffffff
+
+.light
+  color: rgba(37, 38, 94, 0.7)
+  border: 1px solid $borderColor
+  background: #ffffff
+
+.dark
+  color: rgba(37, 38, 94, 0.7)
+  color: #d4d4d4
+  border: 1px solid #d4d4d4
+  background: #1e1e1e
+
 
 .text-editor-name
   background: #fbfbfb
@@ -91,11 +100,21 @@ $editorContentHeight:  calc(100vh - 58px)
 
 .text-output-content
   height: $editorContentHeight
+  font-size: 20px
+  overflow: auto
+
+.output-light
+  border-top: 1px solid $borderColor
   border-right: 1px solid $borderColor
   border-bottom: 1px solid $borderColor
   background: #ffffff
-  font-size: 20px
-  overflow: auto
+
+.output-dark
+  border-top: 1px solid #777676
+  border-right: 1px solid #d4d4d4
+  border-bottom: 1px solid #d4d4d4
+  background: #1e1e1e
+
 
 .text-output-content-success
   margin: 0 5px
@@ -103,6 +122,13 @@ $editorContentHeight:  calc(100vh - 58px)
 
   //a quick fix fot breaking borders
   border: 1px solid inherit
+
+.text-output-content-s-light
+  color: #1f2123
+
+.text-output-content-s-dark
+  color: #d4d4d4
+
 
 .text-output-content-error
   margin: 0 5px

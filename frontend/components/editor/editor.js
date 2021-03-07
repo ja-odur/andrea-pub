@@ -6,6 +6,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import config from "./editorConfigs";
 import examples from "./examples";
 import FullScreenIcon from "../icons/fullscreen";
+import DarkModeIcon from "../icons/darkMode";
 import { runCodeApi } from "apis/compiler";
 import DotLoader from "components/loaders/dotLoader";
 import { HorizontalMultiResizable, VerticalMultiResizable } from "components/resizable/multipleResizable";
@@ -16,37 +17,49 @@ import "styles/editor";
 const iconSize = '60%';
 
 
-export const OutputOrShell = ({ loading, codeOutput, fullscreen }) => {
+export const OutputOrShell = ({ loading, codeOutput, fullscreen, darkMode }) => {
     const fullScreenHandle = useFullScreenHandle();
     const [isFullScreen, setIsFullScreen] = useState(false)
+    const [lightMode, setLightMode] = useState(true)
     return (
         <FullScreen
             handle={fullScreenHandle}
             onChange={(state) => setIsFullScreen(state)}
         >
-            <div className={"output-or-shell"}>
+            { /* use of light to keep the top bar of the shell light regardless */ }
+            <div className={`output-or-shell ${lightMode ? "light" : 'light'}`}>
                 <div className={"editor-header no-border-left"}>
                     <span className={"text-editor-output-name"}>output</span>
                     <div className={"text-editor-command-wrapper"}>
-                        { fullscreen &&
-                              <FullScreenIcon
-                                  enterHandler={fullScreenHandle.enter}
-                                  exitHandler={fullScreenHandle.exit}
-                                  active={isFullScreen}
-                                  height={iconSize}
-                              />
+                        {
+                            fullscreen &&
+                                <FullScreenIcon
+                                    enterHandler={fullScreenHandle.enter}
+                                    exitHandler={fullScreenHandle.exit}
+                                    active={isFullScreen}
+                                    height={iconSize}
+                                />
+                        }
+
+                        {
+                            darkMode &&
+                                <DarkModeIcon
+                                    height={iconSize}
+                                    onClick={() => setLightMode(!lightMode)}
+                                    active={lightMode}
+                                />
                         }
 
                         <button className={"editor-btn text-editor-btn-clear"}>clear</button>
                     </div>
                 </div>
-                <div className={"text-output-content"}>
+                <div className={`text-output-content ${lightMode ? "output-light" : "output-dark"}`}>
                     {loading
                         ?
                         <DotLoader />
                         :
                         <>
-                            <div className={"text-output-content-success"}>
+                            <div className={`text-output-content-success ${lightMode ? "text-output-content-s-light" : "text-output-content-s-dark"}`}>
                                 {codeOutput.output.map((line, index) => (
                                     <div className="output-code-line" key={index}>{line}</div>
                                 ))}
@@ -107,7 +120,7 @@ export const TextEditor = ({ codeRunning, setCodeRunning, updateCodeOutput }) =>
 
     const editorComponent = (
         <div className={"text-editor"}>
-            <div className={"editor-header"}>
+            <div className={"editor-header light"}>
                 <span className={"text-editor-name"}>editor</span>
                 <div className={"text-editor-command-wrapper"}>
                     <FullScreenIcon
@@ -162,6 +175,7 @@ export const TextEditor = ({ codeRunning, setCodeRunning, updateCodeOutput }) =>
                         <OutputOrShell
                             loading={codeRunning}
                             codeOutput={internalCodeOutput}
+                            darkMode
                         />
                     }
                 />
@@ -190,6 +204,7 @@ export default function Editor () {
                         loading={codeRunning}
                         codeOutput={codeOutput}
                         fullscreen
+                        darkMode
                     />}
                 options={{
                     defaultSize: "70%",

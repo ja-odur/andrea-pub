@@ -70,12 +70,18 @@ services:
         SSH_USER: ${SSH_USER}
         SSH_USER_PASSWORD: ${SSH_USER_PASSWORD}
     image: jaodur/node-ssh-server
-    command: bash -c "echo running ssh-server && service ssh start && tail -f /dev/null"
+    command: bash -c "chmod u+x /bin/set_global_env.sh &&
+                      chmod u+x /bin/run_node_script.sh &&
+                      set_global_env.sh &&
+                      echo running ssh-server &&
+                      service ssh start && tail -f /dev/null"
     ports:
       - "${NODE_SSH_HOST_PORT}:22"
 
     volumes:
       - .docker/configs/sshd.config:/etc/ssh/sshd_config
+      - .docker/scripts/run_node_script.sh:/bin/run_node_script.sh
+      - .docker/scripts/set_global_env.sh:/bin/set_global_env.sh
     env_file:
       - .env
     networks:

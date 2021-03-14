@@ -1,6 +1,6 @@
 FROM node:14-buster-slim
 RUN apt-get -y update && \
-    apt-get -y --no-install-recommends install --fix-missing openssh-server openssl && \
+    apt-get -y --no-install-recommends install --fix-missing uuid-runtime openssh-server openssl && \
     rm -rf /var/lib/apt/lists/*
 
 ARG SSH_USER

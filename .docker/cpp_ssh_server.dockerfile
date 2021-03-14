@@ -3,6 +3,7 @@ ARG SSH_USER
 ARG SSH_USER_PASSWORD
 
 ENV TMPDIR /tmp/
+ENV TIMEOUT 120
 
 RUN apt-get -y update && \
     apt-get -y --no-install-recommends install --fix-missing uuid-runtime openssh-server openssl && \

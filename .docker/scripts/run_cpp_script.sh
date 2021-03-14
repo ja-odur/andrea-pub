@@ -15,7 +15,12 @@ done < "${1:-/dev/stdin}"
 g++ -Wall -std=c++17 "$filename" -o "$outputFilename"
 
 if [[ -f "$outputFilename" ]]; then
-  ./"$outputFilename"
+
+  timeout "$TIMEOUT" ./"$outputFilename"
+
+  if [[ "$?" -eq "124" ]]; then
+    echo "The code timed out. allowed is ${TIMEOUT} seconds." 1>&2
+  fi
   rm "$outputFilename"
 fi
 

@@ -10,6 +10,10 @@ do
 
 done < "${1:-/dev/stdin}"
 
-go run "$filename"
+timeout "$TIMEOUT" go run "$filename"
+
+if [[ "$?" -eq "124" ]]; then
+    echo "The code timed out. allowed is ${TIMEOUT} seconds." 1>&2
+fi
 
 rm "$filename"

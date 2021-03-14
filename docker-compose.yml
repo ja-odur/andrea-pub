@@ -86,8 +86,10 @@ services:
     image: jaodur/go-ssh-server
     command: >
             bash -c "chmod u+x /bin/run_go_script.sh &&
+                     chmod u+x /bin/set_global_env.sh &&
                      chmod u+x /bin/set_go_path.sh &&
                      set_go_path.sh &&
+                     set_global_env.sh &&
                      echo running ssh-server &&
                      service ssh start && tail -f /dev/null"
     ports:
@@ -96,6 +98,7 @@ services:
       - .docker/configs/sshd.config:/etc/ssh/sshd_config
       - .docker/scripts/run_go_script.sh:/bin/run_go_script.sh
       - .docker/scripts/set_go_path.sh:/bin/set_go_path.sh
+      - .docker/scripts/set_global_env.sh:/bin/set_global_env.sh
     env_file:
       - .env
     environment:

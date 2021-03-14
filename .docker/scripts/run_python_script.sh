@@ -1,6 +1,6 @@
 #!/bin/bash
 
-filename="$TMPDIR$(uuidgen).go"
+filename="$TMPDIR$(uuidgen).py"
 
 touch "$filename"
 
@@ -10,7 +10,7 @@ do
 
 done < "${1:-/dev/stdin}"
 
-timeout "$TIMEOUT" go run "$filename"
+timeout "$TIMEOUT" python "$filename"
 
 if [[ "$?" -eq "124" ]]; then
     echo "The code timed out. Allowed running time is ${TIMEOUT} seconds." 1>&2

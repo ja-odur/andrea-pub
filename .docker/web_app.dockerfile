@@ -1,5 +1,5 @@
 ## base image
-FROM python:3.6-slim-buster AS PythonNodeBase
+FROM python:3.6-slim-buster AS python-node-base
 
 ## Install node 12
 RUN apt-get update && \
@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt install -y nodejs && apt-get clean
 
 ## dependency image
-FROM PythonNodeBase AS build-requirements
+FROM python-node-base AS build-requirements
 
 ## install dependencies
 RUN apt-get update && \
@@ -40,7 +40,7 @@ RUN npm install
 RUN apt-get -y purge gcc && apt-get clean
 
 ## build-image
-FROM PythonNodeBase
+FROM python-node-base
 
 MAINTAINER Odur Joseph <odurjoseph8@gmail.com>
 

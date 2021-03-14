@@ -19,7 +19,7 @@ if [[ -f "$outputFilename" ]]; then
   timeout "$TIMEOUT" ./"$outputFilename"
 
   if [[ "$?" -eq "124" ]]; then
-    echo "The code timed out. allowed is ${TIMEOUT} seconds." 1>&2
+    echo "The code timed out. Allowed running time is ${TIMEOUT} seconds." 1>&2
   fi
   rm "$outputFilename"
 fi

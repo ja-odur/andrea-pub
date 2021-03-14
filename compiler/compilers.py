@@ -23,10 +23,10 @@ class CodeOutput:
 class SSHClientSingleton(type):
     _instances = {}
     _host_configs = {
-        PYTHON: LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='python', language=PYTHON),
+        PYTHON: LanguageConfig(port=settings.PYTHON_SSH_HOST_PORT, entrypoint='run_python_script.sh', language=PYTHON),
         JAVASCRIPT: LanguageConfig(port=settings.NODE_SSH_HOST_PORT, entrypoint='node', language=JAVASCRIPT),
-        GO: LanguageConfig(port=settings.GO_SSH_HOST_PORT, entrypoint='/bin/run_go_script.sh', language=GO),
-        CPP: LanguageConfig(port=settings.CPP_SSH_HOST_PORT, entrypoint='/bin/run_cpp_script.sh', language=CPP),
+        GO: LanguageConfig(port=settings.GO_SSH_HOST_PORT, entrypoint='run_go_script.sh', language=GO),
+        CPP: LanguageConfig(port=settings.CPP_SSH_HOST_PORT, entrypoint='run_cpp_script.sh', language=CPP),
     }
 
     def __call__(cls, *args, **kwargs):

@@ -30,7 +30,7 @@ create a `.env` file in the application's root directory. The keys of the file a
 | `SSH_USER` | _   | The SSH username that will be used to login (ssh) into the compiler/interpreter servers |
 | `SSH_USER_PASSWORD` | _  | The password that will be used during the ssh login |
 | `GOPATH` | `/usr/local/go/bin` | The path to install Golang |
-| `TIMEOUT` | `120`   | The maximum allowed running time of code be it's timed-out |
+| `TIMEOUT` | `120`   | The maximum allowed running time(in seconds) of code be it's timed-out |
 
 
 ##### building and running application
